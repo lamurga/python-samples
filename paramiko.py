@@ -1,7 +1,13 @@
+import paramiko
+import urllib2
+import StringIO
+from re import sub
+from .models import productModel
 
 def stock(code_store):
-	products = productModel().all()
+	stc_count = 0
 	try:
+		products = productModel.all()
 		path_pem = "file.pem"
 		response = urllib2.urlopen('https://s3.amazonaws.com/%s' % path_pem)
 	    data = response.read()
@@ -10,7 +16,7 @@ def stock(code_store):
 	    ssh = paramiko.SSHClient()
 	    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 	    ssh.connect('ec2-54-00-00-000.compute-1.amazonaws.com', username='ubuntu', pkey=mykey)
-	    stc_count = 0
+	    
 	    for x in products:
 	        code = str(code_store) + str(x.idSTC)
 	        comando = 'grep "' + str(code) + '" SERIEINV.TXT'
@@ -27,5 +33,6 @@ def stock(code_store):
 	            stc_count = stc_count
 	            pass
 	    ssh.close()
+	    return stc_count
 	except Exception, e:
 		print e

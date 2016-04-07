@@ -1,3 +1,7 @@
+from PIL import Image
+import os
+from django.conf import settings
+
 def upload_s3(filename, fn, filetype, name):
     success = False
     try:
