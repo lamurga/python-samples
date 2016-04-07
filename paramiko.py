@@ -5,11 +5,11 @@ from re import sub
 from .models import productModel
 
 def stock(code_store):
-	stc_count = 0
-	try:
-		products = productModel.all()
-		path_pem = "file.pem"
-		response = urllib2.urlopen('https://s3.amazonaws.com/%s' % path_pem)
+    stc_count = 0
+    try:
+        products = productModel.all()
+        path_pem = "file.pem"
+        response = urllib2.urlopen('https://s3.amazonaws.com/%s' % path_pem)
 	    data = response.read()
 	    keyfile = StringIO.StringIO(data)
 	    mykey = paramiko.RSAKey.from_private_key(keyfile)
